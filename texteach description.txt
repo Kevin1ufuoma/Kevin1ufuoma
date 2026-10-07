@@ -1,0 +1,16 @@
+text
+[ Upload PDF ] ➡️ [ 1. Parse & Chunk ] ➡️ [ 2. Vectorize (Embeddings) ] ➡️ [ 3. Store in FAISS DB ]
+                                                                                   ⬇️
+[ User Question ] ➡️ [ Match Similar Chunks ] ➡️ [ Send Chunks + Question to Gemini ] ➡️ [ Teacher Answer ]
+Use code with caution.
+1. The Ingestion Pipeline: It reads a PDF, cuts the text into digestible sentences/paragraphs (Chunks), and uses Gemini's embedding model to turn those words into geometric coordinates (Vectors).
+2. The Vector Storage: It saves those coordinates into your local FAISS index directory so it can look up facts instantly.
+3. The Retrieval & Generation: When a user asks a question, the app finds the closest matching vectors, pulls the actual text segments, and hands them to the AI model with the command: "Act like a teacher and explain this specific text."
+
+
+
+If anyone asks how the text ingestion pipeline works, you can confidently explain:
+1. PyPDFLoader strips the raw strings out of your file layout.
+2. RecursiveCharacterTextSplitter neatly slices the text into 30 manageable chunks (500 characters each) with an overlap so sentences don't get cut in half.
+3. GoogleGenerativeAIEmbeddings contacts Gemini's AI model to translate those English chunks into a list of numeric coordinates.
+4. FAISS indexes those coordinates and writes them to your local disk, so your app never has to upload the raw file to the AI again during a chat session.
